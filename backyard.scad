@@ -174,3 +174,51 @@ translate([39*12+6, 18*12+4, 0])
 shed();
 
 // * Patio/structure
+for(x = [4*12+0, 30*12+0], y = [0 : 4*12+4 : 12*12]) {
+    translate([x, y, 0])
+        cube([4, 4, 8*12]);
+
+    color([.6, .6, .6, .2])
+        translate([x+1, y+4, 0])
+        cube([2, 4*12, 8*12]);
+}
+
+for(x = [4*12+0 : 4*12+4 : 27*12]) {
+    translate([x, 13*12, 0])
+        cube([4, 4, 8*12]);
+
+    color([.6, .6, .6, .2])
+        translate([x+4, 13*12+1, 0])
+        cube([4*12, 2, 8*12]);
+}
+
+translate([30*12+0, 13*12, 0])
+cube([4, 4, 8*12]);
+
+fringe=6;
+color("yellow")
+translate([4*12 - fringe, 0, -0.9])
+cube([26*12+4 + 2*fringe,13*12+4 + fringe,1]);
+
+
+color("orange")
+translate([house.x + 100+15, 30-36, 0])
+//scale([1,1,.5])
+sphere(15);
+
+color("red")
+translate([house.x + 100+45, 45, 0])
+//scale([1,1,.5])
+sphere(45);
+
+color("green")
+translate([house.x + family_room_wall.x, -bedroom_wall.y + 32 + 7.5, 0])
+scale([1,1.5,.25])
+sphere(15);
+
+translate([-south_strip.x +37 + 15, yard.y - 150 - 15 - 53, 0])
+cylinder(d=11, h=30);
+
+translate([-south_strip.x +37 + 15, yard.y - 150 - 15, 0])
+cylinder(r1=7, r2=15, h=100);
+
