@@ -1,5 +1,6 @@
 // -*- mode: scad; orgstruct-heading-prefix-regexp: "// " -*-
 wallHeight = 96;
+o=4;
 
 // * Garage
 garageDoor = [196, 1.02, 83];
@@ -31,46 +32,39 @@ cube(driveway);
 // ** Triangle
 color("lightgrey")
 translate([24+driveway.x,0,-1]) {
-    linear_extrude(height=1.01)
+    linear_extrude(height=3.05)
     polygon(points=[[0,0], [120, 0], [0,70]]);
 }
 
 // * Path
+function redish() = [rands(153/256,173/256,1)[0],rands(139/256,139/256,1)[0],rands(121/256,141/256,1)[0]];
 module path_small() {
-    function redish() = [rands(.7,.9,1)[0],rands(.1,.2,1)[0],rands(.1,.2,1)[0]];
-    color(redish())
-    cube([16,24,1]);
- 
-    color(redish())
-    translate([16,0,0])
-    cube([24,16,1]);
-
-    color(redish())
-    translate([0,24,0])
-    cube([16,8,1]);
-
-    color(redish())
-    translate([16,16,0])
-    cube([16,16,1]);
-
-    color(redish())
-    translate([32,16,0])
-    cube([8,16,1]);
-
-    color(redish())
-    translate([0,32,0])
-    cube([24,16,1]);
-    
-    color(redish())
-    translate([24,32,0])
-    cube([16,16,1]);
+    color(redish()) translate([0,0,0]) cube([16,24,1]);
+     color(redish()) translate([16,0,0]) cube([24,16,1]);
+    color(redish()) translate([0,24,0]) cube([16,8,1]);
+    color(redish()) translate([16,16,0]) cube([16,16,1]);
+    color(redish()) translate([32,16,0]) cube([8,16,1]);
+    color(redish()) translate([0,32,0]) cube([24,16,1]);
+    color(redish()) translate([24,32,0]) cube([16,16,1]);
 }
-translate([-16,0,-1])
-path_small();
+translate([-16,0,-1]) path_small();
+translate([-56,0,-1]) path_small();
 
-translate([-56,0,-1])
-path_small();
-
+module path_big() {
+    color(redish()) translate([0,0,0]) cube([16,24,1]);
+    color(redish()) translate([16,0,0]) cube([16,16,1]);
+    color(redish()) translate([32,0,0]) cube([8,16,1]);
+    color(redish()) translate([16,16,0]) cube([8,16,1]);
+    color(redish()) translate([24,16,0]) cube([16,24,1]);
+    color(redish()) translate([0,24,0]) cube([16,24,1]);
+    color(redish()) translate([16,32,0]) cube([8,16,1]);
+    color(redish()) translate([24,40,0]) cube([16,24,1]);
+    color(redish()) translate([0,48,0]) cube([8,16,1]);
+    color(redish()) translate([8,48,0]) cube([16,16,1]);
+}
+for (i = [0:7]) {
+    translate([-56,-64*i,-1]) path_big();
+}
 color("brown")
 translate([-56,48,-1])
 cube([80,220,1]);
@@ -133,38 +127,17 @@ cube(yard);
 color("green")
 translate([houseSouthSide.x+49,0,0])
 cube([60,268,144]);
-// ** barkdust bed
-*color("brown")
-translate([garageDoorEnclosing.x + doorEntryWall.x,0,-1])
-linear_extrude(height=1.01)
-polygon(points=[[0,0],
-                [10, 20],
-                [20, 28],
-                [30, 35],
-                [40, 37],
-                [50, 39],
-                [60, 40],
-                [70, 41],
-                [80, 42],
-                [90, 43],
-                [100, 43],
-                [110, 43],
-                [120, 42],
-                [130, 41],
-                [140, 39],
-                [150, 35],
-                [160, 28],
-                [170, 20],
-                [180, 0]
-            ]);
 
-// ** new path
-module foo(x,y,x1,y1) {
-    translate([x,y])
-        cube([x1,y1,1]);
-}
+translate([390,100,3]) 
+color("yellow")
+circle(15);
 
-// top line
+translate([530,205,3]) 
+color("yellow")
+circle(15);
+
+
+// ** top line jagged
 *translate([25+driveway.x,0,-1])
 linear_extrude(height=2.01)
 polygon(points=[
@@ -291,12 +264,15 @@ for (i = [0 : 1]) {
         cube(sidewalk);
 }
 
-
-
 // * Planter Strip
 color("green")
 translate([24+driveway.x, 22*12+4 + sidewalk.y, -1])
 cube([100+6,47,1]);
+
+translate([24+driveway.x, 22*12+4 + sidewalk.y, -1])
+translate([50,25,1]) 
+color("white")
+circle(15);
 
 color("red")
 translate([24+driveway.x + 100+6, 22*12+4 + sidewalk.y, -1])
@@ -305,6 +281,11 @@ cube([96+6,47,1]);
 color("green")
 translate([24+driveway.x + 100 +96+12, 22*12+4 + sidewalk.y, -1])
 cube([114+6,47,1]);
+
+translate([24+driveway.x + 100 +96+12, 22*12+4 + sidewalk.y, -1])
+translate([57,25,1]) 
+color("white")
+circle(15);
 
 // neighbors river rock on our property
 color("red")
@@ -372,35 +353,7 @@ translate([garageDoorEnclosing.x, -northEntryWall.y, 0]) {
     }
 }
 
-// * Notes
-
-/*
-100 // driveway to bricks 
-96 // bricks
-114 // bricks to neighbors
-
-42 // planter strip width
-39 // side path width
-63 // side path length
-
-338 
-26 of neighbors river rock on our property
-12 of arborvida at edge of yard
-
-106 // south of center line of driveway
-108 // north of center line of driveway
-10 // wider than south of garage door
-11 // wider than north of garage door
-
-*/
-
 // * Bezier curves
-/* 
-        Bernstein Basis Functions 
-
-        For Bezier curves, these functions give the weights per control point. 
-
-*/ 
 function BEZ03(u) = pow((1-u), 3); 
 function BEZ13(u) = 3*u*(pow((1-u),2)); 
 function BEZ23(u) = 3*(pow(u,2))*(1-u); 
@@ -419,33 +372,54 @@ function PointOnBezCubic3D(p0, p1, p2, p3, u) = [
         BEZ03(u)*p0[2]+BEZ13(u)*p1[2]+BEZ23(u)*p2[2]+BEZ33(u)*p3[2]];
 
 color("green")
-translate([25+driveway.x+120,0,1.01]) {
+translate([25+driveway.x+50,0,2.01]) {
     upperPoints = [
-        [0,0],
-        for (u = [0 : .004 : 1])  PointOnBezCubic2D(
-            [-120, 70] * .25,
-            [-160, 200],
-            [70,240],
-            [180,0], u) 
+        [70,0],
+        for (u = [0 : .027 : 1])  PointOnBezCubic2D(
+            [-120+280, 70] * .25,
+            [-160+70, 200],
+            [70+70,240],
+            [180+70,0], u) 
     ];
+    echo(upperPoints);
     polygon(upperPoints);
 
+    translate([38.5517, 156.065])
+        cube(2);
 }
 
 color("green")
-translate([25+driveway.x+50,0,1.02]) {
+translate([25+driveway.x+50,0,2.02]) {
     c=[302,269];
     lowerPoints = [
-        for (u = [0 : .01 : 1])  PointOnBezCubic2D(
-            [0,c.y],
-            [00,220],
-            [200,280],
-            [c.x,20], u),
+        [0,c.y],
+        for (u = [0 : .027 : 1])  PointOnBezCubic2D(
+            [0,c.y-o],
+            [00,205-o],
+            [200,265-o],
+            [c.x,20-o], u),
         c
     ];
     echo(lowerPoints);
     polygon(lowerPoints);
+
+    translate([128.036, 202.243])
+        cube(2);
+
+    *translate([131.92, 204.555])
+        cube(5);
+
+    *translate([120.339, 198.196])
+        cube(5);
+
+    *translate([298.911, 27.7044])
+                cube(5);
 }
 
-
-
+translate([25+driveway.x+50,0,1.04]) {
+    for (j = [0:8]) {
+        for (i = [0:3]) {
+            translate([-51+j*40,-64*i+204-j*8,-1]) path_big();
+        }
+    }
+}
